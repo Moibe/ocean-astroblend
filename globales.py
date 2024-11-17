@@ -1,12 +1,12 @@
 import gradio as gr
 
 #MAIN
-version = "1.2.3"
-env = "dev"
-aplicacion = "astroblend-dev"
+version = "1.0.0"
+env = "prod"
+aplicacion = "astroblend"
 api = "Moibe/image-blend"
 seto = "image-blend"
 work = "picswap"
-app_path = "/astroblend-dev"
-server_port=7870
+app_path = "/astroblend"
+server_port=7877
 tema = gr.themes.Base()
