@@ -10,7 +10,7 @@ import tools
 btn_buy = gr.Button("Get Credits", visible=False, size='lg')
 
 #PERFORM es la app INTERNA que llamará a la app externa.
-def perform(input1, input2, request: gr.Request, api_name="addition"):
+def perform(input1, input2, request: gr.Request):
 
     tokens = sulkuPypi.getTokens(sulkuPypi.encripta(request.username).decode("utf-8"), globales.env)
     
