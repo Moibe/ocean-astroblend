@@ -1,7 +1,7 @@
 import gradio as gr
 
 #MAIN
-version = "1.2.1"
+version = "2.2.2"
 env = "prod"
 aplicacion = "astroblend"
 api = "Moibe/image-blend"
