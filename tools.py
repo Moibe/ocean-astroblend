@@ -27,7 +27,7 @@ def initAPI():
         #"RUNNING_BUILDING", "APP_STARTING", "SLEEPING", "RUNNING", "PAUSED", "RUNTIME_ERROR"
         if runtime.stage == "SLEEPING":
             api.restart_space(repo_id=repo_id)
-            print("Desperando")
+            print("Despertando")
         print("Hardware: ", runtime.hardware)
         result_from_initAPI = runtime.stage
 
