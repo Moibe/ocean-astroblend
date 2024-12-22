@@ -2,7 +2,6 @@ import bridges
 import globales
 import sulkuPypi
 import sulkuFront
-import debit_rules
 import gradio as gr
 import gradio_client
 import tools
@@ -34,22 +33,39 @@ def perform(input1, input2, request: gr.Request):
         #Si no es imagen es un texto que nos dice algo.
         info_window, resultado, html_credits = sulkuFront.aError(request.username, tokens, excepcion = tools.titulizaExcepDeAPI(resultado))
         return resultado, info_window, html_credits, btn_buy   
-  
-    
-    #2: ¿El resultado es debitable?
-    # if debit_rules.debita(resultado) == True:
-    #     html_credits, info_window = sulkuFront.presentacionFinal(request.username, "debita")
-    # else:
-    #     html_credits, info_window = sulkuFront.presentacionFinal(request.username, "no debita") 
-            
+   
     #Lo que se le regresa oficialmente al entorno.
     return resultado, info_window, html_credits, btn_buy
 
 #MASS es la que ejecuta la aplicación EXTERNA
-def mass(input1, input2): 
+def mass(input1, input2):
+
+    if globales.same_api == False: #Si son diferentes apis, realiza el proceso de selección.
+        api, tipo_api = tools.elijeAPI()
+        print("Una vez elegido API, el tipo api es: ", tipo_api)
+    else: #Si no, deja la primera y no corras ningun proceso. 
+        api = globales.api_zero
+        tipo_api = "cost"  
     
-    client = gradio_client.Client(globales.api, hf_token=bridges.hug)
+    client = gradio_client.Client(api, hf_token=bridges.hug)
     imagenSource = gradio_client.handle_file(input1) 
     imagenDestiny = gradio_client.handle_file(input2) 
-    result = client.predict(imagenSource, imagenDestiny, api_name="/predict")
+    
+    try:
+
+        result = client.predict(imagenSource, imagenDestiny, api_name="/predict")
+        
+        #(Si llega aquí, debes debitar de la quota, incluso si detecto no-face o algo.)
+        if tipo_api == "gratis":
+            print("Como el tipo api fue gratis, si debitaremos la quota.")
+            sulkuPypi.updateQuota(globales.process_cost)
+        #No debitas la cuota si no era gratis, solo aplica para Zero.  
+        
+    except Exception as e:
+        print("Hubo un error al ejecutar MASS:", e)
+        #Errores al correr la API.
+        #La no detección de un rostro es mandado aquí?! Siempre?
+        mensaje = tools.titulizaExcepDeAPI(e)        
+        return mensaje     
+      
     return result

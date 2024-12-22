@@ -1,10 +1,13 @@
 import gradio as gr
 
 #MAIN
-version = "3.2.6"
+version = "4.2.6"
 env = "prod"
 aplicacion = "astroblend"
-api = "Moibe/image-blend"
+api_zero = "Moibe/image-blend"
+api_cost = "Moibe/image-blend"
+same_api = True
+process_cost = 0
 seto = "image-blend"
 work = "picswap"
 app_path = "/astroblend"
